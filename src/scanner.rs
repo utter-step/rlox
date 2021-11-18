@@ -135,8 +135,8 @@ impl<'a> Scanner<'a> {
                             Some(c) if c != '\n' => {
                                 self.advance();
                                 self.start.set(self.start.get() + c.len_utf8());
-                            },
-                            _ => break
+                            }
+                            _ => break,
                         }
                     }
 
