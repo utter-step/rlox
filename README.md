@@ -1,2 +1,2 @@
 # rlox
-Rusty implementation of Lox (see Crafting Interpreters by Robert Nystrom)
+Rusty implementation of Lox (see [Crafting Interpreters](https://craftinginterpreters.com/) by Robert Nystrom)
