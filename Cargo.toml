@@ -8,5 +8,14 @@ edition = "2021"
 [dependencies]
 phf = { version = "0.10", features = ["macros"] }
 
+[dev-dependencies]
+criterion = "0.3"
+lox-syntax = { git = "https://github.com/Darksecond/lox" }
+
+[[bench]]
+name = "vs_rlox_without_borrow"
+harness = false
+
 [profile.release]
 debug = true
+lto = "fat"

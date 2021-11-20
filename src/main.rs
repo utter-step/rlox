@@ -4,15 +4,9 @@ use std::{
     io::{self, Write},
     path::Path,
     process::exit,
-    sync::atomic::AtomicBool,
 };
 
-use scanner::Scanner;
-
-mod scanner;
-mod token;
-
-static HAD_ERROR: AtomicBool = AtomicBool::new(false);
+use rlox::{Scanner, had_error, reset_error};
 
 fn main() -> Result<(), io::Error> {
     let mut args = env::args();
@@ -38,7 +32,7 @@ fn run_file<P: AsRef<Path>>(file_name: P) -> Result<(), io::Error> {
 
     run(&code);
 
-    if HAD_ERROR.load(std::sync::atomic::Ordering::Relaxed) {
+    if had_error() {
         exit(65);
     }
 
@@ -61,7 +55,7 @@ fn run_prompt() -> Result<(), io::Error> {
         };
 
         run(&line);
-        HAD_ERROR.store(false, std::sync::atomic::Ordering::Relaxed);
+        reset_error();
     }
 
     Ok(())
@@ -73,23 +67,4 @@ fn run(source: &str) {
     for token in scanner.tokens() {
         println!("{:?}", token);
     }
-}
-
-pub fn error<S: AsRef<str>>(line: usize, message: S) {
-    report(line, None, message.as_ref());
-}
-
-fn report(line: usize, location: Option<&str>, message: &str) {
-    eprintln!(
-        "[line {}] Error{}: {}",
-        line,
-        if let Some(loc) = location {
-            format!(" {}", loc)
-        } else {
-            "".to_owned()
-        },
-        message
-    );
-
-    HAD_ERROR.store(true, std::sync::atomic::Ordering::Relaxed);
 }

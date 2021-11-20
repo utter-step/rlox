@@ -5,14 +5,6 @@ use crate::{
     token::{Token, TokenValue, KEYWORDS},
 };
 
-#[derive(Debug, Default)]
-pub struct Scanner<'a> {
-    source: &'a str,
-    start: Cell<usize>,
-    current: Cell<usize>,
-    line: Cell<usize>,
-}
-
 macro_rules! _token {
     ($self:ident, $type:ident) => {{
         // safe to unwrap, we've checked previously, that it's not at chars boundary
@@ -38,6 +30,14 @@ macro_rules! _token {
             $self.line.get(),
         ))
     }};
+}
+
+#[derive(Debug, Default)]
+pub struct Scanner<'a> {
+    source: &'a str,
+    start: Cell<usize>,
+    current: Cell<usize>,
+    line: Cell<usize>,
 }
 
 impl<'a> Scanner<'a> {
